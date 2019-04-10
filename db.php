@@ -1,7 +1,6 @@
 <?php
 # Fill our vars and run on cli
 # $ php -f db-connect-test.php
-
 $dbname = 'mysql';
 $dbuser = 'lukomsky';
 $dbpass = 'lukomsky1551pass';
