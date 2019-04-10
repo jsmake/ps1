@@ -2,10 +2,10 @@
 # Fill our vars and run on cli
 # $ php -f db-connect-test.php
 
-$dbname = 'name';
-$dbuser = 'user';
-$dbpass = 'pass';
-$dbhost = 'host';
+$dbname = 'mysql';
+$dbuser = 'lukomsky';
+$dbpass = 'lukomsky1551pass';
+$dbhost = 'test.kitsoft.kiev.ua';
 
 $link = mysqli_connect($dbhost, $dbuser, $dbpass) or die("Unable to Connect to '$dbhost'");
 mysqli_select_db($link, $dbname) or die("Could not open the db '$dbname'");
